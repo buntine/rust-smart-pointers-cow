@@ -5,9 +5,20 @@ fn abs_all(input: &mut Cow<[i32]>) {
         let v = input[i];
 
         if v < 0 {
+            // The first time we to_mut, input is cloned and the pointer is updated.
+            // Successive calls return the existing cloned data.
             input.to_mut()[i] = -v;
         }
     }
+}
+
+fn abs_sum(ns: &[i32]) -> i32 {
+    let mut lst = Cow::from(ns);
+
+    abs_all(&mut lst);
+
+    lst.iter()
+       .fold(0, |acc, &n| acc + n)
 }
 
 fn main() {
@@ -34,4 +45,18 @@ fn main() {
     abs_all(&mut v1);
 
     println!("OUT: {:?}", v1);
+
+
+    // No clone here because no mutation is required.
+    let s3 = [1,3,5,6];
+    let sum1 = abs_sum(&s3[..]);
+    println!("{:?}", s3);
+    println!("{}", sum1);
+
+
+    // We clone here because mutation is required.
+    let s4 = [1,-3,5,-6];
+    let sum2 = abs_sum(&s4[..]);
+    println!("{:?}", s4);
+    println!("{}", sum2);
 }
