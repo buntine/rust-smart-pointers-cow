@@ -1,5 +1,11 @@
 use std::borrow::Cow;
 
+#[derive(Debug)]
+enum List<T> {
+    Cons(T, Box<List<T>>),
+    Nil,
+}
+
 fn abs_all(input: &mut Cow<[i32]>) {
     for i in 0..input.len() {
         let v = input[i];
@@ -59,4 +65,12 @@ fn main() {
     let sum2 = abs_sum(&s4[..]);
     println!("{:?}", s4);
     println!("{}", sum2);
+
+    // Allocating memory on the heap via Box allows us to define recursive data structures.
+    // Because a Box is a pointer into the heap it has a known size and so appropriate
+    // memory can be allocated on the heap (to store the pointer).
+    // If we defined List as "Cons(T, List<T>)" then the size of a list is dependent on the number
+    // of items in it and this we would not know how much memory to allocate.
+    let list: List<i32> = List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))));
+    println!("{:?}", list);
 }
