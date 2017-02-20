@@ -3,6 +3,13 @@ use std::borrow::Cow;
 // Using a clone-on-write (Cow) smart pointer allows us to write abstractions that can operate on
 // borrowed data (eg: &str) that is cloned into an owned object (eg: String) in the case that mutation
 // is required.
+//
+// A Cow can be constructed from either owned or borrowed data:
+//   let a = [1,2,3];
+//   let mut b = Cow::from(&a[..]); // Immutable, borrowed data.
+//
+//   let mut c = vec![1,2,3];
+//   let mut d = Cow::from(c); // Mutable, owned data.
 
 #[derive(Debug)]
 enum List<T> {
@@ -53,10 +60,11 @@ fn main() {
 
 
     // And no clone here because the data is already owned.
+    // NOTE: In this case, v1 is mutated directly as it's owned and mutable.
     let mut v1 = Cow::from(vec![1,2,-3,4]);
     abs_all(&mut v1);
 
-    println!("OUT: {:?}", v1);
+    println!("IN/OUT: {:?}", v1);
 
 
     // No clone here because no mutation is required.
