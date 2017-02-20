@@ -1,5 +1,9 @@
 use std::borrow::Cow;
 
+// Using a clone-on-write (Cow) smart pointer allows us to write abstractions that can operate on
+// borrowed data (eg: &str) that is cloned into an owned object (eg: String) in the case that mutation
+// is required.
+
 #[derive(Debug)]
 enum List<T> {
     Cons(T, Box<List<T>>),
