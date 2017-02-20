@@ -42,6 +42,8 @@ fn main() {
 
 
     // Here we clone because there is a mutation required.
+    // NOTE: The borrowed data is cloned into a new object:
+    //       s2 != i2. Infact, s2 is not mutable and is not changed.
     let s2 = [1,2,3, -45, 5];
     let mut i2 = Cow::from(&s2[..]);
     abs_all(&mut i2);
